@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bullying Detector</title>
+    <link rel="stylesheet" href="/static/styles.css">
+  </head>
+  <body>
+    <main class="container">
+      <h1>Bullying Detector</h1>
+      <p class="subtitle">Enter text below and the model will predict whether it's bullying.</p>
+
+      {% if error %}
+        <div class="alert alert-error">{{ error }}</div>
+      {% endif %}
+
+      {% if label %}
+        <div class="result {{ 'bully' if label == 'Bullying' else 'safe' }}">
+          <h2>{{ label }}</h2>
+          {% if score is not none %}
+            <p class="confidence">Confidence: {{ '%.2f'|format(score*100) }}%</p>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <form method="post" class="predict-form">
+        <textarea name="text" placeholder="Type or paste text to classify" rows="6"></textarea>
+        <div class="actions">
+          <button type="submit" class="btn">Predict</button>
+          <button type="reset" class="btn btn-secondary">Clear</button>
+        </div>
+      </form>
+
+      <footer>
+        <p>Model: <strong>LinearSVCTuned</strong></p>
+      </footer>
+    </main>
+  </body>
+</html>
