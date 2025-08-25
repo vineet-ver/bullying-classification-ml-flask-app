@@ -93,6 +93,24 @@ def create_app():
 
         return render_template("index.html", label=label, score=score, error=error)
 
+    @app.route("/health", methods=["GET"])
+    def health():
+        # health endpoint: returns 200 when model and vectorizer are loaded
+        ok = True
+        details = {}
+        if model is None:
+            ok = False
+            details['model'] = 'missing'
+        else:
+            details['model'] = 'loaded'
+        if vectorizer is None:
+            ok = False
+            details['vectorizer'] = 'missing'
+        else:
+            details['vectorizer'] = 'loaded'
+        status_code = 200 if ok else 503
+        return (details, status_code)
+
     return app
 
 
